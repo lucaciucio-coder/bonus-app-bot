@@ -1,4 +1,5 @@
 import os
+import asyncio
 import logging
 from telegram import Update
 from telegram.ext import (
@@ -97,8 +98,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         state["ha_fatto_app"] = is_yes(text)
         state["step"] = "quali_app"
         await update.message.reply_text("Ok! Ti mando la lista delle app che faccio fare io.")
-await asyncio.sleep(1.5)
-await update.message.reply_text(
+        await asyncio.sleep(1.5)
+        await update.message.reply_text(
             "*BONUS ATTIVI*\n\n"
             "*__REVOLUT__*\n15€\n\n"
             "*__BBVA__*\n10€\n\n"
