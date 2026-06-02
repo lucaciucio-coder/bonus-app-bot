@@ -48,7 +48,7 @@ def get_state(context: ContextTypes.DEFAULT_TYPE) -> dict:
         context.user_data["state"] = {}
     return context.user_data["state"]
 
-async def typing(update: Update, seconds: float = 2.3):
+async def typing(update: Update, seconds: float = 1.8):
     await update.message.chat.send_action("typing")
     await asyncio.sleep(seconds)
 
@@ -107,7 +107,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await typing(update)
         await update.message.reply_text("Ok! Ti mando la lista delle app che faccio fare io.")
         await update.message.chat.send_action("typing")
-        await asyncio.sleep(2.3)
+        await asyncio.sleep(1.8)
         await update.message.reply_text(
             "*BONUS ATTIVI*\n\n"
             "*__REVOLUT__*\n15€\n\n"
