@@ -48,6 +48,10 @@ def get_state(context: ContextTypes.DEFAULT_TYPE) -> dict:
         context.user_data["state"] = {}
     return context.user_data["state"]
 
+async def typing(update: Update, seconds: float = 3):
+    await update.message.chat.send_action("typing")
+    await asyncio.sleep(seconds)
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     first_name = user.first_name or user.username or "amico"
@@ -56,6 +60,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     state["step"] = "conosce_bonus"
     state["nome"] = first_name
     state["username"] = f"@{user.username}" if user.username else f"ID:{user.id}"
+    await typing(update)
     await update.message.reply_text(
         f"Ciao {first_name}, piacere sono Luca! Sai come funzionano i bonus app?"
     )
@@ -70,6 +75,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if step == "conosce_bonus":
+        await typing(update)
         if is_yes(text):
             state["conosce_bonus"] = True
             state["step"] = "ha_fatto_app"
@@ -86,6 +92,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if step == "dopo_spiegazione":
+        await typing(update)
         if is_yes(text):
             state["step"] = "ha_fatto_app"
             await update.message.reply_text("Ottimo, hai già fatto qualche app in passato?")
@@ -97,8 +104,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if step == "ha_fatto_app":
         state["ha_fatto_app"] = is_yes(text)
         state["step"] = "quali_app"
+        await typing(update)
         await update.message.reply_text("Ok! Ti mando la lista delle app che faccio fare io.")
-        await asyncio.sleep(1.5)
+        await update.message.chat.send_action("typing")
+        await asyncio.sleep(3)
         await update.message.reply_text(
             "*BONUS ATTIVI*\n\n"
             "*__REVOLUT__*\n15€\n\n"
@@ -161,6 +170,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             logger.error(f"Errore invio report a Luca: {e}")
 
+        await typing(update)
         nome = state.get("nome", "")
         state["step"] = "fine"
         await update.message.reply_text(
