@@ -753,7 +753,8 @@ async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.chat.send_action("typing")
         await asyncio.sleep(1.3)
         await update.message.reply_text(
-            "Durante l'attesa richiedi l'accesso al gruppo esclusivo di Luca! \U0001f447\U0001f3fb\nhttps://t.me/+ZU36p4Mf0QFmMTU0",
+            "Durante l'attesa richiedi l'accesso al gruppo esclusivo di Luca\! 👉🏻 [TELEGRAM](https://t.me/+ZU36p4Mf0QFmMTU0)\n\nE seguilo su [INSTAGRAM](https://www.instagram.com/lucapuleo\.bsn/)",
+            parse_mode="Markdown",
             disable_web_page_preview=True
         )
         return
